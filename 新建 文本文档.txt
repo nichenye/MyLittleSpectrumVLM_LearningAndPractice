@@ -1,3 +1,0 @@
-在上面这个栏输入cmd
-然后cd nanoVLM
-然后venv\Scripts\activate

@@ -1,0 +1,55 @@
+目前只在我自己的windows端上进行操作，想启动的话：
+在上面这个地址栏全删掉输入cmd
+然后cd nanoVLM
+然后venv\Scripts\activate
+
+（暂时用不惯markdown格式，以后再说）
+
+手动总结一下今天做了什么：
+1：下载了GitHub上的nanoVLM整个项目
+2：一步一步跟着做下来把环境配置好了，
+包括但不限于：：
+利用之前电脑上已经有的python3.12
+（第一次用python。也是第一次直接在cmd框里输入各种指令的方式来搞，后面可能会vscode里搞）
+安装之前早就下载的CUDA的cuda_12.8.0_571.96_windows
+git也是老早搞好但一直没用上的 
+
+然后记录一下怎么一步步激活的：
+解压完原版的，文件名改成nanoVLM之后
+cd nanoVLM
+python -m venv venv
+python -m pip install --upgrade pip
+pip install torch numpy torchvision pillow datasets huggingface-hub transformers wandb
+huggingface-cli login
+python generate.py
+
+但实际上操作有些许偏差，记录如下，方便未来自己参考：
+1：下载 CUDA 12.8 版本的 PyTorch 主程序采用了南大的源
+pip install torch torchvision torchaudio --index-url https://mirrors.nju.edu.cn/pytorch/whl/cu128
+2：然后这个huggingface-cli login由于也是在外面下载一些东西，我还是找办法用国内镜像了
+操作如下：
+~
+在 Windows 搜索框输入 env，选择 “编辑系统环境变量”。
+点击 “环境变量” 按钮。
+在 “用户变量” 或 “系统变量” 区域，点击 “新建”。
+在弹出的窗口中，变量名填 HF_ENDPOINT，变量值填 https://hf-mirror.com。
+一路点击“确定”保存。之后新开的命令行窗口都会自动应用这个设置。
+~
+然后再自动运行python generate.py的时候，就自己下载模型权重了！搞定！
+
+还改了一些generate.py里的内容：
+
+变更文件： generate.py（输入构造部分）
+旧代码（修改前）：
+python
+encoded_prompt = tokenizer.apply_chat_template([messages], tokenize=True, add_generation_prompt=True)
+tokens = torch.tensor(encoded_prompt).to(device)
+
+新代码（修改后）：
+python
+encoded_prompt = tokenizer.apply_chat_template([messages], tokenize=True, add_generation_prompt=True, return_tensors="pt")
+tokens = encoded_prompt.input_ids.to(device)
+
+
+进行小测试，发现给出的第一个输出，在两次运行时完全一致。然后问了ai知道是锁定了随机数，以便这个实验的可重复性。
+搞定，这就是day1完成的工作！
