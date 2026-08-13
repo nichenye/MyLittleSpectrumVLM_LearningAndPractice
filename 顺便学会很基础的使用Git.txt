@@ -1,0 +1,10 @@
+记得每次搞完之后，
+
+git add .
+添加文件	git add .
+
+git commit -m "描述你改了什么"
+提交
+
+git push
+推送
