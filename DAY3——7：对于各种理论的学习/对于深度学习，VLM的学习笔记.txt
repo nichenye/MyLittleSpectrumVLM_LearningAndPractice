@@ -1,0 +1,12 @@
+需要学以下部分 ：
+PyTorch
+神经网络的基本组件
+Transformer架构基础
+
+VLM相关：（这三个连起来写看起来就像transformer框架里编码器解码器+投影层最具象化的样子
+视觉编码器Vit Vision Encoder
+模态投影层Modality Projector
+语言解码器Language Decoder
+
+LLaVA架构核心思想
+视觉问答VQA任务格式
