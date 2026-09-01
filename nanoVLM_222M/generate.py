@@ -52,7 +52,7 @@ def main():
     image_processor = get_image_processor(model.cfg.vit_img_size)
 
     template = f"Question: {args.prompt} Answer:"
-    encoded = tokenizer.batch_encode_plus([template], return_tensors="pt")
+    encoded = tokenizer([template], return_tensors="pt", padding=True, truncation=True)
     tokens = encoded["input_ids"].to(device)
 
     img = Image.open(args.image).convert("RGB")
